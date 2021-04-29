@@ -8,7 +8,7 @@ Will be monolith for now, might split it into microservices depending on how we 
 
 | Module                                       | Description                 |
 | -------------------------------------------- |:---------------------------:|
-| [Inventory](src/modules/inventory/README.md) | Tracking Individual Units   |
+| [Inventory](src/modules/inventory)           | Tracking Individual Units   |
 | [Orders](orders)                             | Order Management            |
 | Customers                                    | Customer Data/Management    |
 | Payment                | Interface for Stripe API    |
