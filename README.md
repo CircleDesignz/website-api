@@ -1,6 +1,18 @@
-# Inventory Service
+# Website API
 
-Contains data for stock units.
+Typescript backend for circle website using nestjs.
+Website will probably be IO bound so node will be ok.
+Will be monolith for now, might split it into microservices depending on how we deploy.
+
+## Modules
+
+| Module                 | Description                 |
+| ---------------------- |:---------------------------:|
+| [Inventory](inventory) | Tracking Individual Units   |
+| [Orders](orders)       | Order Management            |
+| Customers              | Customer Data/Management    |
+| Payment                | Interface for Stripe API    |
+| Shipping               | Shipping data               |
 
 ## Deploy
 
