@@ -6,13 +6,13 @@ Will be monolith for now, might split it into microservices depending on how we 
 
 ## Modules
 
-| Module                                       | Description                 |
-| -------------------------------------------- |:---------------------------:|
-| [Inventory](src/modules/inventory)           | Tracking Individual Units   |
-| [Orders](orders)                             | Order Management            |
-| Customers                                    | Customer Data/Management    |
-| Payment                | Interface for Stripe API    |
-| Shipping               | Shipping data               |
+| Module                         | Description                 |
+| ------------------------------ |:---------------------------:|
+| [Inventory](src/inventory)     | Tracking Individual Units   |
+| [Orders](src/orders)           | Order Management            |
+| Customers                      | Customer Data/Management    |
+| Payment                        | Interface for Stripe API    |
+| Shipping                       | Shipping data               |
 
 ## Deploy
 
