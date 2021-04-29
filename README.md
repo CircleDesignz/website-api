@@ -6,11 +6,11 @@ Will be monolith for now, might split it into microservices depending on how we 
 
 ## Modules
 
-| Module                 | Description                 |
-| ---------------------- |:---------------------------:|
-| [Inventory](inventory) | Tracking Individual Units   |
-| [Orders](orders)       | Order Management            |
-| Customers              | Customer Data/Management    |
+| Module                                       | Description                 |
+| -------------------------------------------- |:---------------------------:|
+| [Inventory](src/modules/inventory/README.md) | Tracking Individual Units   |
+| [Orders](orders)                             | Order Management            |
+| Customers                                    | Customer Data/Management    |
 | Payment                | Interface for Stripe API    |
 | Shipping               | Shipping data               |
 
