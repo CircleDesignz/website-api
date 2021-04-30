@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Unit } from './inventory/inventory-unit.entity';
+import { InventoryUnit } from './inventory/inventory-unit.entity';
 import { InventoryModule } from './inventory/inventory.module';
 
 @Module({
@@ -12,7 +12,7 @@ import { InventoryModule } from './inventory/inventory.module';
       username: 'fx',
       password: '162301',
       database: 'circle_inventory',
-      entities: [Unit],
+      entities: [InventoryUnit],
       synchronize: true,
     }),
     InventoryModule

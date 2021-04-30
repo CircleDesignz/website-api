@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryColumn } from 'typeorm';
 
 @Entity()
-export class Unit {
+export class InventoryUnit {
   @PrimaryColumn()
   sku: string;
 
@@ -19,7 +19,4 @@ export class Unit {
 
   @Column({ type: "double precision" })
   weight: number;
-
-  @Column('simple-array')
-  associations: string[];
 }

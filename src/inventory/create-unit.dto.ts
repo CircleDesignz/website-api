@@ -5,5 +5,4 @@ export class CreateUnitDto {
   unitPrice: number;
   currentStock: number;
   weight: number;
-  associations: string[];
 }

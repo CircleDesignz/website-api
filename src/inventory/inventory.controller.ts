@@ -8,7 +8,7 @@ import { Controller,
   Delete,
 } from '@nestjs/common';
 import { InventoryService } from './inventory.service';
-import { Unit } from './inventory-unit.entity';
+import { InventoryUnit } from './inventory-unit.entity';
 import { CreateUnitDto } from './create-unit.dto';
 
 @Controller('inventory')
@@ -16,12 +16,12 @@ export class InventoryController {
   constructor(private inventoryService: InventoryService) {}
 
   @Get()
-  findAllUnits(): Promise<Unit[]> {
+  findAllUnits(): Promise<InventoryUnit[]> {
     return this.inventoryService.findAllUnits();
   }
 
   @Post()
-  async createUnit(@Body() unit: CreateUnitDto): Promise<Unit> {
+  async createUnit(@Body() unit: CreateUnitDto): Promise<InventoryUnit> {
     if (await this.inventoryService.skuExists(unit.sku)) {
       throw new HttpException('SKU already exists', HttpStatus.CONFLICT);
     }

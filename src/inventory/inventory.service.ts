@@ -1,17 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DeleteResult } from 'typeorm';
-import { Unit } from './inventory-unit.entity';
+import { InventoryUnit } from './inventory-unit.entity';
 import { CreateUnitDto } from './create-unit.dto';
 
 @Injectable()
 export class InventoryService {
   constructor(
-    @InjectRepository(Unit)
-    private inventoryRepository: Repository<Unit>,
+    @InjectRepository(InventoryUnit)
+    private inventoryRepository: Repository<InventoryUnit>,
   ) {}
 
-  findAllUnits(): Promise<Unit[]> {
+  findAllUnits(): Promise<InventoryUnit[]> {
     return this.inventoryRepository.find();
   }
 
@@ -19,15 +19,14 @@ export class InventoryService {
     return await this.inventoryRepository.count({ sku: sku }) !== 0;
   }
 
-  createUnit(unit: CreateUnitDto): Promise<Unit> {
-    const newUnit = new Unit();
+  createUnit(unit: CreateUnitDto): Promise<InventoryUnit> {
+    const newUnit = new InventoryUnit();
     newUnit.sku = unit.sku;
     newUnit.name = unit.name;
     newUnit.unitCost = unit.unitCost;
     newUnit.unitPrice = unit.unitPrice;
     newUnit.currentStock = unit.currentStock;
     newUnit.weight = unit.weight;
-    newUnit.associations = unit.associations;
 
     return this.inventoryRepository.save(newUnit);
   }
