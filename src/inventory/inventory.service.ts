@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DeleteResult } from 'typeorm';
-import { Unit } from './entities/inventory-unit.entity';
-import { CreateUnitDto } from './dto/create-unit.dto';
+import { Unit } from './inventory-unit.entity';
+import { CreateUnitDto } from './create-unit.dto';
 
 @Injectable()
 export class InventoryService {

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Unit } from './inventory/entities/inventory-unit.entity';
+import { Unit } from './inventory/inventory-unit.entity';
 import { InventoryModule } from './inventory/inventory.module';
 
 @Module({

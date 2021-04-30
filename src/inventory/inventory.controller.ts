@@ -8,8 +8,8 @@ import { Controller,
   Delete,
 } from '@nestjs/common';
 import { InventoryService } from './inventory.service';
-import { Unit } from './entities/inventory-unit.entity';
-import { CreateUnitDto } from './dto/create-unit.dto';
+import { Unit } from './inventory-unit.entity';
+import { CreateUnitDto } from './create-unit.dto';
 
 @Controller('inventory')
 export class InventoryController {
@@ -30,6 +30,7 @@ export class InventoryController {
 
   @Delete(':sku')
   async deleteUnit(@Param('sku') sku: string): Promise<void> {
+    // TODO: Deleting "Product" inventory should check that no orders are currently being fulfilled for that unit
     const result = await this.inventoryService.deleteUnit(sku);
     if (result.affected === 0) {
       throw new HttpException('Unit with SKU does not exist', HttpStatus.NOT_FOUND);
