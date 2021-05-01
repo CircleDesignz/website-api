@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { InventoryUnit } from './inventory/inventory-unit.entity';
 import { InventoryModule } from './inventory/inventory.module';
+import { InventoryUnit } from './inventory/inventory-unit.entity';
+import { Order } from './orders/order.entity';
+import { Customer } from './customers/customer.entity';
 
 @Module({
   // TODO: dotenv for this
@@ -12,7 +14,7 @@ import { InventoryModule } from './inventory/inventory.module';
       username: 'fx',
       password: '162301',
       database: 'circle_inventory',
-      entities: [InventoryUnit],
+      entities: [InventoryUnit, Order, Customer],
       synchronize: true,
     }),
     InventoryModule

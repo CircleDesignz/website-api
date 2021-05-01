@@ -1,6 +1,7 @@
 import { Controller,
   Get,
   Post,
+  Put,
   Body,
   HttpException,
   HttpStatus,
@@ -9,7 +10,8 @@ import { Controller,
 } from '@nestjs/common';
 import { InventoryService } from './inventory.service';
 import { InventoryUnit } from './inventory-unit.entity';
-import { CreateUnitDto } from './create-unit.dto';
+import { RegisterUnitDto } from './dto/register-unit.dto';
+import { UpdateArchiveDto } from './dto/update-archive.dto';
 
 @Controller('inventory')
 export class InventoryController {
@@ -21,19 +23,37 @@ export class InventoryController {
   }
 
   @Post()
-  async createUnit(@Body() unit: CreateUnitDto): Promise<InventoryUnit> {
-    if (await this.inventoryService.skuExists(unit.sku)) {
-      throw new HttpException('SKU already exists', HttpStatus.CONFLICT);
+  async registerUnit(@Body() dto: RegisterUnitDto): Promise<InventoryUnit> {
+    try {
+      return this.inventoryService.registerUnit(dto);
+    } catch (e) {
+      if (e instanceof UnitConflictError) {
+        throw new HttpException(e.message, HttpStatus.CONFLICT);
+      }
     }
-    return this.inventoryService.createUnit(unit);
+  }
+
+  @Put()
+  async updateArchiveState(@Body() dto: UpdateArchiveDto): Promise<InventoryUnit> {
+    try {
+      return this.inventoryService.setArchiveState(dto);
+    } catch (e) {
+      if (e instanceof UnitNotFoundError) {
+        throw new HttpException(e.message, HttpStatus.NOT_FOUND);
+      }
+    }
   }
 
   @Delete(':sku')
   async deleteUnit(@Param('sku') sku: string): Promise<void> {
-    // TODO: Deleting "Product" inventory should check that no orders are currently being fulfilled for that unit
-    const result = await this.inventoryService.deleteUnit(sku);
-    if (result.affected === 0) {
-      throw new HttpException('Unit with SKU does not exist', HttpStatus.NOT_FOUND);
+    try {
+      await this.inventoryService.deleteUnit(sku);
+    } catch (e) {
+      if (e instanceof UnitNotFoundError) {
+        throw new HttpException(e.message, HttpStatus.NOT_FOUND);
+      } else if (e instanceof OrderConflictError) {
+        throw new HttpException(e.message, HttpStatus.CONFLICT);
+      }
     }
   }
 }
