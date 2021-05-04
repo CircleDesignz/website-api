@@ -5,5 +5,4 @@ export class RegisterUnitDto {
   priceInCad: number;
   stock: number;
   weightInKg: number;
-  isArchived: boolean;
 }
