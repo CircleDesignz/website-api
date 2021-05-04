@@ -12,7 +12,7 @@ import { InventoryService } from './inventory.service';
 import { InventoryUnit } from './inventory-unit.entity';
 import { RegisterUnitDto } from './dto/register-unit.dto';
 import { UpdateArchiveDto } from './dto/update-archive.dto';
-import { UnitConflictError, UnitNotFoundError, OrderConflictError } from '../common/exceptions/inventory';
+import { UnitConflictError, UnitNotFoundError, OrderConflictError, UnitNotArchivedError } from '../common/exceptions/inventory';
 
 @Controller('inventory')
 export class InventoryController {
@@ -25,38 +25,35 @@ export class InventoryController {
   }
 
   @Post()
-  async registerUnit(@Body() dto: RegisterUnitDto): Promise<InventoryUnit> {
-    try {
-      return this.inventoryService.registerUnit(dto);
-    } catch (e) {
+  async registerUnit(@Body() dto: RegisterUnitDto): Promise<void | InventoryUnit> {
+    return this.inventoryService.registerUnit(dto).catch((e) => {
       if (e instanceof UnitConflictError) {
         throw new HttpException(e.message, HttpStatus.CONFLICT);
       }
-    }
+    })
   }
 
   @Put()
   async updateArchiveState(@Body() dto: UpdateArchiveDto): Promise<void> {
-    try {
-      return this.inventoryService.setArchiveState(dto);
-    } catch (e) {
+    return this.inventoryService.setArchiveState(dto).catch((e) => {
       if (e instanceof UnitNotFoundError) {
         throw new HttpException(e.message, HttpStatus.NOT_FOUND);
       }
-    }
+    })
   }
 
   @Delete(':sku')
   async deleteUnit(@Param('sku') sku: string): Promise<void> {
-    try {
-      await this.inventoryService.deleteUnit(sku);
-    } catch (e) {
+    // Why await???
+    await this.inventoryService.deleteUnit(sku).catch((e) => {
       if (e instanceof UnitNotFoundError) {
         throw new HttpException(e.message, HttpStatus.NOT_FOUND);
       } else if (e instanceof OrderConflictError) {
         throw new HttpException(e.message, HttpStatus.CONFLICT);
+      } else if (e instanceof UnitNotArchivedError) {
+        throw new HttpException(e.message, HttpStatus.CONFLICT);
       }
-    }
+    });
   }
 }
 

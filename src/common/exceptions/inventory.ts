@@ -18,3 +18,10 @@ export class OrderConflictError extends Error {
     this.name = "OrderConflictError";
   }
 }
+
+export class UnitNotArchivedError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "UnitNotArchivedError";
+  }
+}
