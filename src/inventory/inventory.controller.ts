@@ -12,6 +12,7 @@ import { InventoryService } from './inventory.service';
 import { InventoryUnit } from './inventory-unit.entity';
 import { RegisterUnitDto } from './dto/register-unit.dto';
 import { UpdateArchiveDto } from './dto/update-archive.dto';
+import { UnitConflictError, UnitNotFoundError, OrderConflictError } from '../common/exceptions/inventory';
 
 @Controller('inventory')
 export class InventoryController {

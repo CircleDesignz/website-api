@@ -5,6 +5,7 @@ import { InventoryUnit } from './inventory-unit.entity';
 import { RegisterUnitDto } from './dto/register-unit.dto';
 import { OrdersService } from '../orders/orders.service';
 import { UpdateArchiveDto } from './dto/update-archive.dto';
+import { UnitConflictError, UnitNotFoundError, OrderConflictError } from '../common/exceptions/inventory';
 
 @Injectable()
 export class InventoryService {
@@ -35,9 +36,10 @@ export class InventoryService {
     newUnit.sku = dto.sku;
     newUnit.name = dto.name;
     newUnit.costInCad = dto.costInCad;
-    newUnit.priceInCad = dto.priceinCad;
+    newUnit.priceInCad = dto.priceInCad;
     newUnit.currentStock = dto.stock;
     newUnit.weightInKg = dto.weightInKg;
+    newUnit.isArchived = dto.isArchived;
     return this.inventoryRepository.save(newUnit);
   }
 

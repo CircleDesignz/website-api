@@ -50,7 +50,7 @@ describe('InventoryService', () => {
     dto.sku = '123';
     dto.name = 'TestProduct';
     dto.costInCad = 123;
-    dto.priceinCad = 123;
+    dto.priceInCad = 123;
     dto.stock = 0;
     dto.weightInKg = 123;
     await inventoryService.registerUnit(dto);
