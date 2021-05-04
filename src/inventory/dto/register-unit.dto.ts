@@ -1,8 +1,8 @@
 export class RegisterUnitDto {
   sku: string;
   name: string;
-  unitCost: number;
-  unitPrice: number;
-  currentStock: number;
-  weight: number;
+  costInCad: number;
+  priceinCad: number;
+  stock: number;
+  weightInKg: number;
 }
