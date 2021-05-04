@@ -3,8 +3,6 @@ import { Controller,
   Post,
   Put,
   Body,
-  HttpException,
-  HttpStatus,
   Param,
   Delete,
 } from '@nestjs/common';
@@ -12,7 +10,6 @@ import { InventoryService } from './inventory.service';
 import { InventoryUnit } from './inventory-unit.entity';
 import { RegisterUnitDto } from './dto/register-unit.dto';
 import { UpdateArchiveDto } from './dto/update-archive.dto';
-import { UnitConflictError, UnitNotFoundError, OrderConflictError, UnitNotArchivedError } from '../common/exceptions/inventory';
 
 @Controller('inventory')
 export class InventoryController {
@@ -20,40 +17,27 @@ export class InventoryController {
 
   // TODO: maybe convert return type from entity to dtos;
   @Get()
-  findAllUnits(): Promise<InventoryUnit[]> {
-    return this.inventoryService.findAllUnits();
+  getAllUnits(): Promise<InventoryUnit[]> {
+    return this.inventoryService.getAllUnits();
   }
 
   @Post()
-  async registerUnit(@Body() dto: RegisterUnitDto): Promise<void | InventoryUnit> {
-    return this.inventoryService.registerUnit(dto).catch((e) => {
-      if (e instanceof UnitConflictError) {
-        throw new HttpException(e.message, HttpStatus.CONFLICT);
-      }
-    })
+  async registerUnit(@Body() dto: RegisterUnitDto): Promise<InventoryUnit> {
+    try {
+      return this.inventoryService.registerUnit(dto);
+    } catch (e) {
+      throw e
+    }
   }
 
   @Put()
   async updateArchiveState(@Body() dto: UpdateArchiveDto): Promise<void> {
-    return this.inventoryService.setArchiveState(dto).catch((e) => {
-      if (e instanceof UnitNotFoundError) {
-        throw new HttpException(e.message, HttpStatus.NOT_FOUND);
-      }
-    })
+    return this.inventoryService.setArchiveState(dto);
   }
 
   @Delete(':sku')
   async deleteUnit(@Param('sku') sku: string): Promise<void> {
-    // Why await???
-    await this.inventoryService.deleteUnit(sku).catch((e) => {
-      if (e instanceof UnitNotFoundError) {
-        throw new HttpException(e.message, HttpStatus.NOT_FOUND);
-      } else if (e instanceof OrderConflictError) {
-        throw new HttpException(e.message, HttpStatus.CONFLICT);
-      } else if (e instanceof UnitNotArchivedError) {
-        throw new HttpException(e.message, HttpStatus.CONFLICT);
-      }
-    });
+    this.inventoryService.deleteUnit(sku);
   }
 }
 
