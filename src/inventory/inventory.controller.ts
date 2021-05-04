@@ -17,6 +17,7 @@ import { UpdateArchiveDto } from './dto/update-archive.dto';
 export class InventoryController {
   constructor(private inventoryService: InventoryService) {}
 
+  // TODO: maybe convert return type from entity to dtos;
   @Get()
   findAllUnits(): Promise<InventoryUnit[]> {
     return this.inventoryService.findAllUnits();
@@ -34,7 +35,7 @@ export class InventoryController {
   }
 
   @Put()
-  async updateArchiveState(@Body() dto: UpdateArchiveDto): Promise<InventoryUnit> {
+  async updateArchiveState(@Body() dto: UpdateArchiveDto): Promise<void> {
     try {
       return this.inventoryService.setArchiveState(dto);
     } catch (e) {
