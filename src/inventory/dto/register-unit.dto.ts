@@ -1,4 +1,5 @@
-import { IsString, IsNumber, IsInt, Min } from 'class-validator';
+import { IsString, IsNumber, IsInt, Min, Max } from 'class-validator';
+import { CD_MAX_SAFE_INT } from 'src/common/constants/constants';
 
 export class RegisterUnitDto {
   @IsString()
@@ -9,10 +10,12 @@ export class RegisterUnitDto {
 
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
+  @Max(CD_MAX_SAFE_INT)
   costInCad: number;
 
   @IsNumber({ maxDecimalPlaces: 2 })
   @Min(0)
+  @Max(CD_MAX_SAFE_INT)
   priceInCad: number;
 
   @IsInt()

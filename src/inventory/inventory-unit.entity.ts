@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryColumn } from 'typeorm';
-import { Dinero } from 'dinero.js';
+import Dinero from 'dinero.js';
 
 @Entity()
 export class InventoryUnit {
@@ -9,11 +9,23 @@ export class InventoryUnit {
   @Column()
   name: string;
 
-  @Column({ type: "money" })
-  costInCad: Dinero;
+  @Column({
+    type: "int",
+    transformer: {
+      to: (object: Dinero.Dinero) => object.getAmount(),
+      from: (value: number) => Dinero({ amount: value, currency: "CAD" })
+    }
+  })
+  costInCad: Dinero.Dinero;
 
-  @Column({ type: "money" })
-  priceInCad: Dinero;
+  @Column({
+    type: "int",
+    transformer: {
+      to: (value: Dinero.Dinero) => value.getAmount(),
+      from: (value: number) => Dinero({ amount: value, currency: "CAD" })
+    }
+  })
+  priceInCad: Dinero.Dinero;
 
   @Column({ type: "integer" })
   stock: number;
