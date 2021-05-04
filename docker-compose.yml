@@ -4,23 +4,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      ports:
-        - "5001:3000"
-      links:
-        - "database"
-  database:
-    container_name: database
-    image: postgres
-    restart: always
-    environment:
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASS=${DB_PASS}
-    volumes:
-      - inventory-data:/var/lib/postgresql/data
     ports:
-      - "9001:5432"
-    expose:
-      - "9001"
+      - "8001:3000"
+  test_postgres:
+    container_name: test_postgres
+    image: postgres:13
+    restart: always
+    ports:
+      - 5001:5432
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: test_data
+    volumes:
+      - /tmp:/tmp
 volumes:
   inventory-data:
