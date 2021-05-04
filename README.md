@@ -44,4 +44,5 @@ Then `docker-compose up -d`
 
 ## Future
 
-- Maybe change typeorm repository calls to query builder.
+- Currency is currently stored using Dinero.js -> stores money value in minor currency units (cents). MAX_SAFE_INTEGER in JS is 2^53-1,
+meaning for persistent store, we can't store it in 64 bit int, have to use 32bit, meaning we are constrained to using 32bit range for dinero. This is probably fine for us but test for overflow.
