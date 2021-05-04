@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Dinero } from 'dinero.js';
 
 @Entity()
 export class InventoryUnit {
@@ -8,14 +9,14 @@ export class InventoryUnit {
   @Column()
   name: string;
 
-  @Column({ type: "numeric" })
-  costInCad: number;
+  @Column({ type: "money" })
+  costInCad: Dinero;
 
-  @Column({ type: "numeric" })
-  priceInCad: number;
+  @Column({ type: "money" })
+  priceInCad: Dinero;
 
   @Column({ type: "integer" })
-  currentStock: number;
+  stock: number;
 
   @Column({ type: "double precision" })
   weightInKg: number;
