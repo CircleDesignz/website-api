@@ -7,7 +7,7 @@ import { Controller,
   Delete,
 } from '@nestjs/common';
 import { InventoryService } from './inventory.service';
-import { InventoryUnit } from './inventory-unit.entity';
+import { InventoryEntity } from './inventory-unit.entity';
 import { RegisterUnitDto } from './dto/register-unit.dto';
 import { UpdateArchiveDto } from './dto/update-archive.dto';
 
@@ -17,27 +17,23 @@ export class InventoryController {
 
   // TODO: maybe convert return type from entity to dtos;
   @Get()
-  getAllUnits(): Promise<InventoryUnit[]> {
-    return this.inventoryService.getAllUnits();
+  listAllUnits(): Promise<InventoryEntity[]> {
+    return this.inventoryService.listAllUnits();
   }
 
   @Post()
-  async registerUnit(@Body() dto: RegisterUnitDto): Promise<InventoryUnit> {
-    try {
-      return this.inventoryService.registerUnit(dto);
-    } catch (e) {
-      throw e
-    }
+  async registerUnit(@Body() dto: RegisterUnitDto): Promise<InventoryEntity> {
+    return this.inventoryService.registerUnit(dto);
   }
 
   @Put()
-  async updateArchiveState(@Body() dto: UpdateArchiveDto): Promise<void> {
-    return this.inventoryService.setArchiveState(dto);
+  async updateArchiveState(@Body() dto: UpdateArchiveDto): Promise<InventoryEntity> {
+    return this.inventoryService.updateArchiveState(dto);
   }
 
   @Delete(':sku')
   async deleteUnit(@Param('sku') sku: string): Promise<void> {
-    this.inventoryService.deleteUnit(sku);
+    await this.inventoryService.deleteUnit(sku);
   }
 }
 

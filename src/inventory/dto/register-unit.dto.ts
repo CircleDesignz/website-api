@@ -1,8 +1,9 @@
-import { IsString, IsNumber, IsInt, Min, Max } from 'class-validator';
+import { IsString, IsNumber, IsInt, Min, Max, Length } from 'class-validator';
 import { CD_MAX_SAFE_INT } from 'src/common/constants/constants';
 
 export class RegisterUnitDto {
   @IsString()
+  @Length(8, 12)
   sku: string;
 
   @IsString()

@@ -6,5 +6,5 @@ export class UpdateArchiveDto {
   sku: string;
 
   @IsBoolean()
-  newArchiveState: boolean;
+  isArchived: boolean;
 }

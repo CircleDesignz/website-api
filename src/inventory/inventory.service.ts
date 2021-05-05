@@ -1,70 +1,73 @@
-import { ConflictException, ForbiddenException, HttpException, HttpStatus, Inject, Injectable, NotFoundException, PreconditionFailedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { InventoryUnit } from './inventory-unit.entity';
-import { RegisterUnitDto } from './dto/register-unit.dto';
-import { OrdersService } from '../orders/orders.service';
-import { UpdateArchiveDto } from './dto/update-archive.dto';
+import { DeleteResult, Repository } from 'typeorm';
 import Dinero from 'dinero.js';
+
+import { OrderEntity } from '../orders/order.entity';
+import { RegisterUnitDto } from './dto/register-unit.dto';
+import { InventoryEntity } from './inventory-unit.entity';
+import { UpdateArchiveDto as UpdateArchiveStateDto } from './dto/update-archive.dto';
 import { InventoryErrors } from 'src/common/errors/inventory/inventory.errors';
 
 @Injectable()
 export class InventoryService {
   constructor(
-    @Inject(OrdersService)
-    private readonly ordersService: OrdersService,
-    @InjectRepository(InventoryUnit)
-    private inventoryRepository: Repository<InventoryUnit>,
+    @InjectRepository(InventoryEntity)
+    private inventoryRepository: Repository<InventoryEntity>,
+    @InjectRepository(OrderEntity)
+    private readonly orderRepository: Repository<OrderEntity>
   ) {}
 
-  async unitExists(sku: string): Promise<boolean> {
-    return (await this.inventoryRepository.count({ sku: sku })) !== 0;
-  }
-
-  async isUnitArchived(sku: string): Promise<boolean> {
-    return (await this.inventoryRepository.findOne(sku)).isArchived;
-  }
-
-  getAllUnits(): Promise<InventoryUnit[]> {
+  async listAllUnits(): Promise<InventoryEntity[]> {
     return this.inventoryRepository.find();
   }
 
-  findOne(sku: string): Promise<InventoryUnit> {
-    return this.inventoryRepository.findOne(sku);
-  }
-
-  async registerUnit(dto: RegisterUnitDto): Promise<InventoryUnit> {
-    if (await this.unitExists(dto.sku)) {
+  async registerUnit(dto: RegisterUnitDto): Promise<InventoryEntity> {
+    if (await this.inventoryRepository.findOne(dto.sku)) {
       throw new ConflictException(InventoryErrors.UnitConflict);
     }
-    // TODO: Maybe abstract this to a builder
-    const newUnit = new InventoryUnit();
-    newUnit.sku = dto.sku;
-    newUnit.name = dto.name;
-    newUnit.costInCad = Dinero({ amount: dto.costInCad * 100 });
-    newUnit.priceInCad = Dinero({ amount: dto.priceInCad * 100 });
-    newUnit.stock = dto.stock;
-    newUnit.weightInKg = dto.weightInKg;
-    newUnit.isArchived = false;
-    return this.inventoryRepository.save(newUnit);
+
+    const unit = new InventoryEntity();
+
+    unit.sku = dto.sku;
+    unit.name = dto.name;
+    unit.costInCad = Dinero({ amount: dto.costInCad * 100 });
+    unit.priceInCad = Dinero({ amount: dto.priceInCad * 100 });
+    unit.stock = dto.stock;
+    unit.weightInKg = dto.weightInKg;
+    unit.isArchived = false;
+
+    return this.inventoryRepository.save(unit);
   }
 
-  async setArchiveState(dto: UpdateArchiveDto): Promise<void> {
-    const { sku, newArchiveState } = dto;
-    if (!(await this.unitExists(dto.sku)))
+  async updateArchiveState(
+    dto: UpdateArchiveStateDto
+  ): Promise<InventoryEntity> {
+    const unit = await this.inventoryRepository.findOne(dto.sku);
+
+    if (!unit) {
       throw new NotFoundException(InventoryErrors.NotFound);
-    else if (!(await this.ordersService.ordersContainsSku(sku)))
-      throw new ConflictException(InventoryErrors.OrderConflict);
-    this.inventoryRepository.update(dto.sku, { isArchived: newArchiveState });
+    }
+
+    // TODO: Check orders
+
+    unit.isArchived = dto.isArchived;
+    return this.inventoryRepository.save(unit);
   }
 
   async deleteUnit(sku: string): Promise<void> {
-    if (!(await this.unitExists(sku))) {
+    const unit = await this.inventoryRepository.findOne(sku);
+
+    if (!unit) {
       throw new NotFoundException(InventoryErrors.NotFound);
-    } else if (!(await this.isUnitArchived(sku))) {
-      throw new PreconditionFailedException(InventoryErrors.OrderConflict);
+    } else if (!unit.isArchived) {
+      throw new NotFoundException(InventoryErrors.NotArchived);
     }
-    this.inventoryRepository.delete({ sku: sku });
+
+    await this.inventoryRepository.delete(unit);
   }
 }
-

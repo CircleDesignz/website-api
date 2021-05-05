@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryColumn } from 'typeorm';
 import Dinero from 'dinero.js';
 
 @Entity()
-export class InventoryUnit {
+export class InventoryEntity {
   @PrimaryColumn()
   sku: string;
 
