@@ -2,9 +2,10 @@ import {
   ConflictException,
   Injectable,
   NotFoundException,
+  PreconditionFailedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository } from 'typeorm';
+import { DeleteResult, In, Repository } from 'typeorm';
 import Dinero from 'dinero.js';
 
 import { OrderEntity } from '../orders/order.entity';
@@ -54,6 +55,17 @@ export class InventoryService {
     }
 
     // TODO: Check orders
+    let query = this.orderRepository
+      .createQueryBuilder()
+      .select('*')
+      .from(OrderEntity, 'order')
+      .where(`'${dto.sku}' = Any (order.items)`)
+      .getQuery();
+    const orders = await this.orderRepository.query(query);
+
+    if (orders.length) {
+      throw new PreconditionFailedException(InventoryErrors.OrderConflict);
+    }
 
     unit.isArchived = dto.isArchived;
     return this.inventoryRepository.save(unit);
