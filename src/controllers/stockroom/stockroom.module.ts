@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
-import { StockroomControllerController } from './stockroom-controller/stockroom-controller.controller';
-import { StockroomController } from './stockroom/stockroom.controller';
-import { StockroomService } from './stockroom/stockroom.service';
+import { StockroomController } from '@controllers/stockroom/stockroom.controller';
+import { StockroomService } from '@services/stockroom/stockroom.service';
+import { PrismaService } from '@services/persistence/prisma.service';
 
 @Module({
-  controllers: [StockroomControllerController, StockroomController],
-  providers: [StockroomService]
+  controllers: [StockroomController],
+  providers: [StockroomService, PrismaService]
 })
 export class StockroomModule {}

@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { StockroomModule } from '@controllers/stockroom/stockroom.module';
 import { ServicesModule } from '@services/services.module';
 
