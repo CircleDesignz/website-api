@@ -11,10 +11,57 @@ generator client {
 }
 
 model StockEntity {
-  id          Int      @id @default(autoincrement())
-  sku         String   @unique
+  id                  String    @id @default(cuid())
+  sku                 String    @unique
+  descriptor          String
+  tally               Int       @default(0)
+  incoming            Int?
+  dateCreated         DateTime  @default(now())
+  isArchived          Boolean   @default(false)
+  productAssociations Product[]
+}
+
+model Product {
+  id          String        @id @default(cuid())
+  sku         String        @unique
   descriptor  String
-  tally       Int      @default(0)
+  tally       Int
   incoming    Int?
+  dateCreated DateTime      @default(now())
+  isForSale   Boolean
+  parts       StockEntity[]
+  orderAssociations Order[]
+}
+
+model Order {
+  id         String   @id @default(cuid())
   dateCreated DateTime @default(now())
+  dateFulfilled DateTime?
+  customer   Customer @relation(fields: [customerId], references: [id])
+  customerId String
+  items  Product[]
+  paymentStatus  PaymentStatus
+  orderStatus OrderStatus
+}
+
+model Customer {
+  id     String  @id @default(cuid())
+  orders Order[]
+  // Shipping?
+}
+
+enum PaymentStatus {
+  AUTHORIZED
+  PENDING
+  PAID
+  REFUNDED
+  VOIDED
+}
+
+enum OrderStatus {
+  OPEN
+  FULFILLED
+  SCHEDULED
+  ARCHIVED
+  CANCELLED
 }
