@@ -19,6 +19,8 @@ model StockEntity {
   dateCreated         DateTime  @default(now())
   isArchived          Boolean   @default(false)
   productAssociations Product[]
+
+  @@map("stock_entity")
 }
 
 model Product {
@@ -28,26 +30,32 @@ model Product {
   tally       Int
   incoming    Int?
   dateCreated DateTime      @default(now())
-  isForSale   Boolean
+  isForSale   Boolean       @default(false)
   parts       StockEntity[]
-  orderAssociations Order[]
+  ordersFor   Order[]
+
+  @@map("product")
 }
 
 model Order {
-  id         String   @id @default(cuid())
-  dateCreated DateTime @default(now())
+  id            String        @id @default(cuid())
+  dateCreated   DateTime      @default(now())
   dateFulfilled DateTime?
-  customer   Customer @relation(fields: [customerId], references: [id])
-  customerId String
-  items  Product[]
-  paymentStatus  PaymentStatus
-  orderStatus OrderStatus
+  customer      Customer?     @relation(fields: [customerId], references: [id])
+  customerId    String?
+  items         Product[]
+  paymentStatus PaymentStatus
+  orderStatus   OrderStatus
+
+  @@map("order")
 }
 
 model Customer {
   id     String  @id @default(cuid())
   orders Order[]
   // Shipping?
+
+  @@map("customer")
 }
 
 enum PaymentStatus {
