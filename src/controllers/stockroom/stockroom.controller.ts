@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { StockroomService } from '@services/stockroom/stockroom.service';
-import { StockEntity } from '.prisma/client';
 import { RegisterStockEntityDto } from './dto/register-stock.dto';
+import { RegisterProductDto } from './dto/register-product.dto';
+import { Product, StockEntity } from '@prisma/client';
 
 @Controller('stockroom')
 export class StockroomController {
@@ -12,8 +13,23 @@ export class StockroomController {
     return this.stockroomService.getAll();
   }
 
+  @Get('/products')
+  async getAllProducts(): Promise<Product[]> {
+    return this.stockroomService.getAllProducts();
+  }
+
   @Post()
-  async registerStock(@Body() dto: RegisterStockEntityDto): Promise<StockEntity> {
-    return this.stockroomService.register(dto);
+  async registerPart(@Body() dto: RegisterStockEntityDto): Promise<StockEntity> {
+    return this.stockroomService.registerPart(dto);
+  }
+
+  @Post('/product')
+  async registerProduct(@Body() dto: RegisterProductDto): Promise<Product> {
+    return this.stockroomService.registerProduct(dto);
+  }
+
+  @Post(':sku')
+  async archiveStock(@Param() sku: string): Promise<StockEntity> {
+    return this.stockroomService.archiveStock(sku);
   }
 }

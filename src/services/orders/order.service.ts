@@ -17,7 +17,7 @@ export class OrderService {
 
     try {
       const ids = [];
-      for (const item in itemsBySku) {
+      for (const item of itemsBySku) {
         ids.push({ id: item });
       }
 
