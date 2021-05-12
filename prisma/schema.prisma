@@ -28,6 +28,7 @@ model Product {
   id          String   @id @default(cuid())
   isForSale   Boolean  @default(false)
   sold        Int      @default(0)
+  price       Int      @default(0)
   orders      Order[]
   stockEntity StockEntity?
 
