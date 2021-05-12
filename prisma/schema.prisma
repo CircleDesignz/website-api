@@ -11,28 +11,25 @@ generator client {
 }
 
 model StockEntity {
-  id                  String    @id @default(cuid())
-  sku                 String    @unique
-  descriptor          String
-  tally               Int       @default(0)
-  incoming            Int?
-  dateCreated         DateTime  @default(now())
-  isArchived          Boolean   @default(false)
-  productAssociations Product[]
+  id          String   @id @default(cuid())
+  sku         String   @unique
+  descriptor  String
+  tally       Int      @default(0)
+  incoming    Int?
+  dateCreated DateTime @default(now())
+  isArchived  Boolean  @default(false)
+  product     Product? @relation(fields: [productId], references: [id])
+  productId   String?
 
   @@map("stock_entity")
 }
 
 model Product {
-  id          String        @id @default(cuid())
-  sku         String        @unique
-  descriptor  String
-  tally       Int
-  incoming    Int?
-  dateCreated DateTime      @default(now())
-  isForSale   Boolean       @default(false)
-  parts       StockEntity[]
-  ordersFor   Order[]
+  id          String   @id @default(cuid())
+  isForSale   Boolean  @default(false)
+  sold        Int      @default(0)
+  orders      Order[]
+  stockEntity StockEntity?
 
   @@map("product")
 }
@@ -51,9 +48,12 @@ model Order {
 }
 
 model Customer {
-  id     String  @id @default(cuid())
-  orders Order[]
-  // Shipping?
+  id             String   @id @default(cuid())
+  fullName       String
+  shippingAddr   String
+  orders         Order[]
+  previousOrders String[]
+  totalSpent     Int
 
   @@map("customer")
 }
