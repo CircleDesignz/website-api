@@ -10,7 +10,7 @@ export enum ProductStatus {
 
 @Entity()
 export class Product {
-  @Column((type) => InventoryUnit)
+  @Column(() => InventoryUnit)
   info: InventoryUnit;
 
   @Column({ type: 'enum', enum: ProductStatus, default: ProductStatus.STOPPED })

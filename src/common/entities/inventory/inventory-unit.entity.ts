@@ -17,10 +17,10 @@ export class InventoryUnit {
   @Column()
   incoming?: number;
 
-  @Column()
+  @Column({ type: 'timestamptz'})
   dateCreated: Date;
 
-  @Column()
+  @Column({ type: 'timestamptz'})
   lastUpdated: Date;
 
   @Column()
