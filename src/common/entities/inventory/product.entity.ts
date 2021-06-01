@@ -1,4 +1,4 @@
-import { Entity, Column } from 'typeorm';
+import { Column, ChildEntity, Generated } from 'typeorm';
 import { currencyTransformer } from '@common/utils/transformers';
 import { InventoryUnit } from './inventory-unit.entity';
 
@@ -8,17 +8,21 @@ export enum ProductStatus {
   STOPPED = 'stopped',
 }
 
-@Entity()
-export class Product {
-  @Column(() => InventoryUnit)
-  info: InventoryUnit;
+@ChildEntity()
+export class Product extends InventoryUnit {
+  @Generated('uuid')
+  prodId: string;
 
-  @Column({ type: 'enum', enum: ProductStatus, default: ProductStatus.STOPPED })
+  @Column({ type: 'enum', enum: ProductStatus })
   status: ProductStatus;
 
-  @Column({ type: 'numeric', precision: 2, transformer: currencyTransformer }) // TODO: Numeric(2) -> Dinero might be wrong
-  unit_cost?: Dinero.Dinero;
+  @Column({
+    type: 'integer',
+    transformer: currencyTransformer,
+    nullable: true,
+  }) // TODO: Numeric(2) -> Dinero might be wrong
+  unitCost?: Dinero.Dinero;
 
-  @Column({ type: 'numeric', precision: 2, transformer: currencyTransformer })
-  sale_price: Dinero.Dinero;
+  @Column({ type: 'integer', transformer: currencyTransformer })
+  salePrice: Dinero.Dinero;
 }

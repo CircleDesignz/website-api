@@ -1,9 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  TableInheritance,
+} from 'typeorm';
 
 @Entity()
+@TableInheritance({ column: { type: 'varchar', name: 'type' } })
 export class InventoryUnit {
   @PrimaryGeneratedColumn()
-  id: string;
+  _id: string;
 
   @Column({ unique: true })
   sku: string;
@@ -11,18 +17,18 @@ export class InventoryUnit {
   @Column()
   descriptor: string;
 
-  @Column()
+  @Column({ default: 0 })
   count: number;
 
-  @Column()
+  @Column({ nullable: true })
   incoming?: number;
 
-  @Column({ type: 'timestamptz'})
-  dateCreated: Date;
+  @Column({ type: 'timestamptz' })
+  dateCreated: Date; // TODO: make this a Date maybe
 
-  @Column({ type: 'timestamptz'})
+  @Column({ type: 'timestamptz' })
   lastUpdated: Date;
 
-  @Column()
+  @Column({ default: false })
   isArchived: boolean;
 }
