@@ -1,6 +1,6 @@
 import { ValueTransformer } from 'typeorm';
-import { DEFAULT_CURRENCY } from '@common/constants/currency';
 import Dinero from 'dinero.js';
+import { DEFAULT_CURRENCY } from '../constants/currency';
 
 // TODO: Probably a better way to do this
 export const currencyTransformer: ValueTransformer = {

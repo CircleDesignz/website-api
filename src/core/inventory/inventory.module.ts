@@ -1,15 +1,17 @@
-import { InventoryUnit } from '@common/entities/inventory/inventory-unit.entity';
-import { Product } from '@common/entities/inventory/product.entity';
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
+import { OrdersModule } from '../orders/orders.module';
+import { InventoryService } from './services/inventory.service';
+import { InventoryController } from './controllers/inventory.controller';
+import { InventoryRepository } from './repositories/inventory.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { InventoryUnitFactory } from './factory/inventory-unit.factory';
-import { ProductFactory } from './factory/product.factory';
-import { InventoryController } from './inventory.controller';
-import { InventoryService } from './inventory.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([InventoryUnit, Product])],
-  providers: [InventoryService, InventoryUnitFactory, ProductFactory],
+  imports: [
+    TypeOrmModule.forFeature([InventoryRepository]),
+    forwardRef(() => OrdersModule),
+  ],
+  exports: [InventoryService],
+  providers: [InventoryService],
   controllers: [InventoryController],
 })
 export class InventoryModule {}

@@ -2,11 +2,9 @@ import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
-  TableInheritance,
 } from 'typeorm';
 
 @Entity()
-@TableInheritance({ column: { type: 'varchar', name: 'type' } })
 export class InventoryUnit {
   @PrimaryGeneratedColumn()
   _id: string;
@@ -24,7 +22,7 @@ export class InventoryUnit {
   incoming?: number;
 
   @Column({ type: 'timestamptz' })
-  dateCreated: Date; // TODO: make this a Date maybe
+  dateCreated: Date;
 
   @Column({ type: 'timestamptz' })
   lastUpdated: Date;

@@ -1,3 +1,4 @@
+import { Product } from 'src/core/inventory/entities/product.entity';
 import {
   Column,
   Entity,
@@ -6,8 +7,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Customer } from '../customers/customer.entity';
-import { Product } from '../inventory/product.entity';
+import { Customer } from '../../../common/entities/customers/customer.entity';
 
 export enum PaymentStatus {
   AUTHORIZED = 'authorized',

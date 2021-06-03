@@ -1,6 +1,5 @@
-import { Column, ChildEntity, Generated } from 'typeorm';
-import { currencyTransformer } from '@common/utils/transformers';
-import { InventoryUnit } from './inventory-unit.entity';
+import { currencyTransformer } from 'src/common/utils/transformers';
+import { Column, Entity, Generated, PrimaryColumn } from 'typeorm';
 
 export enum ProductStatus {
   LIVE = 'live',
@@ -8,8 +7,11 @@ export enum ProductStatus {
   STOPPED = 'stopped',
 }
 
-@ChildEntity()
-export class Product extends InventoryUnit {
+@Entity()
+export class Product {
+  @PrimaryColumn()
+  _id: string;
+
   @Generated('uuid')
   prodId: string;
 

@@ -1,5 +1,5 @@
 import { PrimaryGeneratedColumn, Entity, Column, OneToMany } from 'typeorm';
-import { Order } from '../orders/order.entity';
+import { Order } from '../../../core/orders/entities/order.entity';
 
 export class Address {
   street: string;
