@@ -5,7 +5,8 @@ import { CoreModule } from './core/core.module';
 import { InventoryUnit } from './core/inventory/entities/inventory-unit.entity';
 import { Order } from './core/orders/entities/order.entity';
 
-const entities = [InventoryUnit];
+const entities = [InventoryUnit, Order];
+
 @Module({
   imports: [
     // TODO: move to .env

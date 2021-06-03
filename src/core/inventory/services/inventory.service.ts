@@ -1,5 +1,4 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { Order } from 'src/core/orders/entities/order.entity';
 import { OrdersService } from 'src/core/orders/services/orders.service';
 import { RegisterUnitDto } from '../dto/register-unit.dto';
 import { InventoryUnit } from '../entities/inventory-unit.entity';
@@ -30,7 +29,19 @@ export class InventoryService {
     return this._inventoryRepository.save(unit); // TODO: return dto
   }
 
-  private async _unitExists(sku: string): Promise<boolean> {
+  async archiveUnit(sku: string): Promise<void> {
+    if (!(await this._unitExists(sku))) {
+      throw new HttpException({}, 404);
+    }
+
+    if (await this._ordersService.hasOutstandingOrders()) {
+      throw new HttpException({}, 404);
+    }
+
+    this._inventoryRepository.update({ sku }, { isArchived: true });
+  }
+
+  async _unitExists(sku: string): Promise<boolean> {
     const query = this._inventoryRepository
       .createQueryBuilder()
       .select('1')

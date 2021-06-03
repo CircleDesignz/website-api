@@ -19,8 +19,8 @@ export class Customer {
   @Column({ type: 'money' })
   totalSpent: number;
 
-  @OneToMany(() => Order, (order) => order.customer)
-  orders: Order[];
+  //@OneToMany(() => Order, (order) => order.customer)
+  //orders: Order[];
 
   @Column((type) => Address)
   address: Address;
