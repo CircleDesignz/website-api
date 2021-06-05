@@ -9,7 +9,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Customer } from '../../../common/entities/customers/customer.entity';
+import { Customer } from '../../customers/entities/customer.entity';
 
 @Entity()
 export class Order {
@@ -25,12 +25,12 @@ export class Order {
   @Column()
   dateFulfilled?: Date;
 
-  //@ManyToOne(() => Customer, (customer) => customer.orders)
-  //customer: Customer;
+  @ManyToOne(() => Customer, (customer) => customer.orders)
+  customer: Customer;
 
-  //@ManyToMany(() => Product)
-  //@JoinTable()
-  //items: Product[];
+  @ManyToMany(() => Product)
+  @JoinTable()
+  items: Product[];
 
   @Column({ type: 'enum', enum: PaymentStatus, default: PaymentStatus.PENDING })
   paymentStatus: PaymentStatus;

@@ -1,8 +1,5 @@
-import {
-  Column,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { currencyTransformer } from 'src/common/utils/transformers';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class InventoryUnit {
@@ -29,4 +26,11 @@ export class InventoryUnit {
 
   @Column({ default: false })
   isArchived: boolean;
+
+  @Column({
+    type: 'integer',
+    transformer: currencyTransformer,
+    nullable: true,
+  })
+  unitCost?: Dinero.Dinero;
 }

@@ -11,6 +11,10 @@ export class InventoryService {
     private readonly _ordersService: OrdersService
   ) {}
 
+  async findBySku(sku: string): Promise<InventoryUnit> {
+    return this._inventoryRepository.findOneOrFail({ sku });
+  }
+
   async registerUnit(dto: RegisterUnitDto): Promise<InventoryUnit> {
     if (await this._unitExists(dto.sku)) {
       throw new HttpException({}, 404); // TODO error handling

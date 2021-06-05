@@ -4,7 +4,6 @@ import { InventoryUnit } from 'src/core/inventory/entities/inventory-unit.entity
 import {
   Column,
   Entity,
-  Generated,
   JoinColumn,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -12,26 +11,17 @@ import {
 
 @Entity()
 export class Product {
-  @PrimaryGeneratedColumn()
-  _id: string;
-
-  @Generated('uuid')
-  prodId: string;
-
-  @Column({ type: 'enum', enum: ProductStatus })
-  status: ProductStatus;
-
-  @Column({
-    type: 'integer',
-    transformer: currencyTransformer,
-    nullable: true,
-  }) // TODO: Numeric(2) -> Dinero might be wrong
-  unitCost?: Dinero.Dinero;
-
-  @Column({ type: 'integer', transformer: currencyTransformer })
-  salePrice: Dinero.Dinero;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @OneToOne(() => InventoryUnit)
   @JoinColumn()
   unit: InventoryUnit;
+
+  @Column({ type: 'enum', enum: ProductStatus })
+  status: ProductStatus;
+
+  @Column({ type: 'integer', transformer: currencyTransformer })
+  salesPrice: Dinero.Dinero;
+
 }
