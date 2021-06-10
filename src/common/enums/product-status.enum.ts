@@ -1,5 +1,5 @@
 export enum ProductStatus {
-  LIVE = 'live',
-  PAUSED = 'paused',
-  STOPPED = 'stopped',
+  STOPPED = 'STOPPED',
+  PAUSED = 'PAUSED',
+  LIVE = 'LIVE',
 }

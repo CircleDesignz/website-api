@@ -1,29 +1,26 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EventEmitterModule } from '@nestjs/event-emitter';
-import { CoreModule } from './core/core.module';
-import { InventoryUnit } from './core/inventory/entities/inventory-unit.entity';
-import { Order } from './core/orders/entities/order.entity';
-import { Product } from './core/catalog/entities/product.entity';
-import { Customer } from './core/customers/entities/customer.entity';
-
-const entities = [InventoryUnit, Order, Product, Customer];
+import { CatalogModule } from './modules/catalog/catalog.module';
+import { InventoryModule } from './modules/inventory/inventory.module';
 
 @Module({
   imports: [
-    // TODO: move to .env
+    InventoryModule,
+    CatalogModule,
+    ConfigModule.forRoot({
+      envFilePath: '.env.dev',
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      database: 'circle_main',
-      username: 'fx',
-      password: '162301',
-      entities,
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT),
+      database: process.env.DB_NAME,
+      username: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      autoLoadEntities: true,
       synchronize: true, // TODO: Set false for production
     }),
-    EventEmitterModule.forRoot(),
-    CoreModule,
   ],
 })
 export class AppModule {}
