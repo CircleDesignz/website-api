@@ -1,11 +1,18 @@
-import { Column, Entity, Generated, PrimaryGeneratedColumn } from "typeorm";
+import {
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity()
 export abstract class IdentifiableEntity {
-  @PrimaryGeneratedColumn('increment')
-  _id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @Column()
-  @Generated('uuid')
-  uuid: string;
+  @CreateDateColumn({ type: 'timestamptz' })
+  created: Date;
+
+  @UpdateDateColumn({ type: 'timestamptz' })
+  updated: Date;
 }
