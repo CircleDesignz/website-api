@@ -11,6 +11,7 @@ export class InventoryService {
     return this._itemRepository.find();
   }
 
+  // Prob delete
   async findManyByUuid(uuids: string[]): Promise<Item[]> {
     return this._itemRepository
       .createQueryBuilder('item')
@@ -23,7 +24,6 @@ export class InventoryService {
       throw new ConflictException();
     }
 
-    // TODO: this may not be performant with relations.
     const item = this._itemRepository.create({
       ...dto,
     });

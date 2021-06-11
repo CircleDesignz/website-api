@@ -8,7 +8,7 @@ import { ProductRepository } from '../repositories/product.repository';
 export class CatalogService {
   constructor(private readonly _productRepository: ProductRepository) {}
 
-  async getAllRaw(): Promise<Product[]> {
+  async _getAllRaw(): Promise<Product[]> {
     return this._productRepository
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.variants', 'variants')

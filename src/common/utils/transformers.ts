@@ -1,6 +1,6 @@
 import { ValueTransformer } from 'typeorm';
 import Dinero from 'dinero.js';
-import { DEFAULT_CURRENCY } from '../constants/currency';
+//import { DEFAULT_CURRENCY } from '../constants/currency';
 
 // TODO: Probably a better way to do this
 export const currencyTransformer: ValueTransformer = {
@@ -9,5 +9,5 @@ export const currencyTransformer: ValueTransformer = {
   from: (value: number) =>
     value === null
       ? null
-      : Dinero({ amount: value, currency: DEFAULT_CURRENCY }),
+      : Dinero({ amount: value, currency: "USD" }),
 };

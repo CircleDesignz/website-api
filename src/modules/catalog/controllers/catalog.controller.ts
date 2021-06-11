@@ -10,8 +10,8 @@ export class CatalogController {
   constructor(private readonly _catalogService: CatalogService) {}
 
   @Get('/test')
-  async getAllRaw(): Promise<Product[]> {
-    return this._catalogService.getAllRaw();
+  async _getAllRawDebug(): Promise<Product[]> {
+    return this._catalogService._getAllRaw();
   }
 
   @Post()
