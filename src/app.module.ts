@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CatalogModule } from './modules/catalog/catalog.module';
 import { InventoryModule } from './modules/inventory/inventory.module';
@@ -20,6 +21,9 @@ import { InventoryModule } from './modules/inventory/inventory.module';
       password: process.env.DB_PASSWORD,
       autoLoadEntities: true,
       synchronize: true, // TODO: Set false for production
+    }),
+    EventEmitterModule.forRoot({
+      verboseMemoryLeak: true,
     }),
   ],
 })
