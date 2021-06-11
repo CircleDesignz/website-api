@@ -5,10 +5,9 @@ import { ItemRepository } from './repositories/item.repository';
 import { InventoryService } from './services/inventory.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([ItemRepository])],
+  imports: [TypeOrmModule.forFeature([ItemRepository])],
   exports: [InventoryService],
   providers: [InventoryService],
-  controllers: [InventoryController]
+  controllers: [InventoryController],
 })
 export class InventoryModule {}

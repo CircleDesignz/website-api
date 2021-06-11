@@ -1,15 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { InventoryService } from '../../inventory/services/inventory.service';
 import { RegisterProductDto } from '../dto/register-product.dto';
+import { UpdateProductDetailsDto } from '../dto/update-details.dto';
 import { Product } from '../entities/product.entity';
 import { ProductRepository } from '../repositories/product.repository';
 
 @Injectable()
 export class CatalogService {
-  constructor(
-    private readonly _productRepository: ProductRepository,
-    private readonly _inventoryService: InventoryService
-  ) {}
+  constructor(private readonly _productRepository: ProductRepository) {}
 
   async getAllRaw(): Promise<Product[]> {
     return this._productRepository
@@ -21,14 +18,31 @@ export class CatalogService {
   async registerProduct(dto: RegisterProductDto): Promise<Product> {
     const { variantUuids } = dto;
 
-    // Retrieve variants
-    const variants = await this._inventoryService.findManyByUuid(variantUuids);
+    // TODO: validate variants exist
+    const variants = variantUuids.map((uuid) => {
+      return { id: uuid };
+    });
 
-    const product = this._productRepository.create({
+    let product = this._productRepository.create({
       variants,
       ...dto,
     });
 
     return this._productRepository.save(product);
+  }
+
+  async updateDetails(id: string, dto: UpdateProductDetailsDto): Promise<void> {
+    await this._productRepository.update(id, { ...dto });
+  }
+
+  async addVariantsToProduct(
+    productId: string,
+    variantIds: string[]
+  ): Promise<void> {
+    await this._productRepository
+      .createQueryBuilder()
+      .relation(Product, 'variants')
+      .of(productId)
+      .add(variantIds);
   }
 }

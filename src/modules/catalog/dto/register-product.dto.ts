@@ -1,7 +1,17 @@
 import { ProductStatus } from '@circle/src/common/enums/product-status.enum';
-import { IsArray, IsEnum, IsInt, IsOptional, Min } from 'class-validator';
+import { IsArray, IsEnum, IsInt, IsOptional, IsString, Min } from 'class-validator';
 
 export class RegisterProductDto {
+  @IsString()
+  title: string;
+
+  @IsString()
+  description: string;
+
+  @IsString()
+  @IsOptional()
+  image?: string;
+
   @IsArray()
   variantUuids: string[];
 

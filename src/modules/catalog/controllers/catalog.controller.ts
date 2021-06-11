@@ -1,5 +1,7 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import { AddVariantsToProductsDto } from '../dto/add-variants.dto';
 import { RegisterProductDto } from '../dto/register-product.dto';
+import { UpdateProductDetailsDto } from '../dto/update-details.dto';
 import { Product } from '../entities/product.entity';
 import { CatalogService } from '../services/catalog.service';
 
@@ -15,5 +17,21 @@ export class CatalogController {
   @Post()
   async registerProduct(@Body() dto: RegisterProductDto): Promise<Product> {
     return this._catalogService.registerProduct(dto);
+  }
+
+  @Patch('/detail/:id')
+  async updateProductDetails(
+    @Param() id: string,
+    @Body() dto: UpdateProductDetailsDto
+  ): Promise<void> {
+    this._catalogService.updateDetails(id, dto);
+  }
+
+  @Patch('/:id')
+  async addVariantsToProduct(
+    @Param() id: string,
+    @Body() dto: AddVariantsToProductsDto
+  ): Promise<void> {
+    this._catalogService.addVariantsToProduct(id, dto.variantUuids);
   }
 }
