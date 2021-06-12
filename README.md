@@ -38,6 +38,8 @@ Then `docker-compose up -d`
 ## TODO
 
 - Monetary values to Dinero
+- Event Sourcing for specific modules
+- Notification system
 - Tests
 - middleware + logging
 - Currently uses "synchronize: true"; switch to data base migrations in production.
