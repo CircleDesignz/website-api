@@ -1,12 +1,16 @@
 import { IdentifiableEntity } from '@circle/src/common/entities/identifiable.entity';
 import { OrderStatus } from '@circle/src/common/enums/order-status.enum';
 import { PaymentStatus } from '@circle/src/common/enums/payment-status.enum';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
+import { Customer } from '../../customers/entities/customer.entity';
 
 @Entity()
 export class Order extends IdentifiableEntity {
   @Column({ generated: 'increment' })
   reference: number;
+
+  @ManyToOne(() => Customer, (customer) => customer.orders)
+  customer: Customer;
 
   @Column({
     type: 'enum',
@@ -24,7 +28,5 @@ export class Order extends IdentifiableEntity {
 
   @Column()
   total: number;
-
 }
-// TODO: Relation for customer
 // TODO: Relation for items in cart

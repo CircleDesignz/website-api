@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CatalogModule } from './modules/catalog/catalog.module';
+import { CustomersModule } from './modules/customers/customers.module';
 import { InventoryModule } from './modules/inventory/inventory.module';
 import { OrdersModule } from './modules/orders/orders.module';
 
@@ -11,6 +12,7 @@ import { OrdersModule } from './modules/orders/orders.module';
     InventoryModule,
     CatalogModule,
     OrdersModule,
+    CustomersModule,
     ConfigModule.forRoot({
       envFilePath: '.env.dev',
     }),
