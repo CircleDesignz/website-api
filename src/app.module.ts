@@ -9,10 +9,11 @@ import { OrdersModule } from './modules/orders/orders.module';
 
 @Module({
   imports: [
-    InventoryModule,
+    AuthModule,
     CatalogModule,
-    OrdersModule,
     CustomersModule,
+    InventoryModule,
+    OrdersModule,
     ConfigModule.forRoot({
       envFilePath: '.env.dev',
     }),
