@@ -11,7 +11,7 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "paths": {
-      "@circle/*": ["./*"]
+      "@circle/*": ["./src/*"]
     },
     "incremental": true,
     "esModuleInterop": true
