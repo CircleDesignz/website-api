@@ -1,6 +1,6 @@
-import { IdentifiableEntity } from '@circle/src/common/entities/identifiable.entity';
-import { OrderStatus } from '@circle/src/common/enums/order-status.enum';
-import { PaymentStatus } from '@circle/src/common/enums/payment-status.enum';
+import { IdentifiableEntity } from '@circle/common/entities/identifiable.entity';
+import { OrderStatus } from '@circle/common/enums/order-status.enum';
+import { PaymentStatus } from '@circle/common/enums/payment-status.enum';
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { Customer } from '../../customers/entities/customer.entity';
 

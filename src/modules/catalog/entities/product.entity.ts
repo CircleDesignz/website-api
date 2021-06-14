@@ -1,5 +1,5 @@
-import { IdentifiableEntity } from '@circle/src/common/entities/identifiable.entity';
-import { ProductStatus } from '@circle/src/common/enums/product-status.enum';
+import { IdentifiableEntity } from '@circle/common/entities/identifiable.entity';
+import { ProductStatus } from '@circle/common/enums/product-status.enum';
 import { Column, Entity, OneToMany } from 'typeorm';
 import { Item } from '../../inventory/entities/item.entity';
 

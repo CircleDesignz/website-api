@@ -1,4 +1,4 @@
-import { ProductStatus } from '@circle/src/common/enums/product-status.enum';
+import { ProductStatus } from '@circle/common/enums/product-status.enum';
 import { IsArray, IsEnum, IsInt, IsOptional, IsString, Min } from 'class-validator';
 
 export class RegisterProductDto {

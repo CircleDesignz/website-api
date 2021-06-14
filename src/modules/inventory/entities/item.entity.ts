@@ -1,4 +1,4 @@
-import { IdentifiableEntity } from '@circle/src/common/entities/identifiable.entity';
+import { IdentifiableEntity } from '@circle/common/entities/identifiable.entity';
 import { Column, Entity, ManyToOne } from 'typeorm';
 import { Product } from '../../catalog/entities/product.entity';
 
