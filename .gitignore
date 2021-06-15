@@ -35,4 +35,4 @@ lerna-debug.log*
 
 # Config
 .env
-.env.dev
+.dev.env
