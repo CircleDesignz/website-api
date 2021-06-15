@@ -37,9 +37,10 @@ Then `docker-compose up -d`
 
 ## TODO
 
+- Add guards to api endpoints
 - Monetary values to Dinero
-- Event Sourcing for specific modules
 - Notification system
+- Websocket for admin
 - Tests
 - middleware + logging
 - Currently uses "synchronize: true"; switch to data base migrations in production.
