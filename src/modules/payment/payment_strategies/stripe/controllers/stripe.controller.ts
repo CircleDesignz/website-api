@@ -5,8 +5,4 @@ import { StripeService } from '../services/stripe.service';
 export class StripeController {
   constructor(private readonly _stripeService: StripeService) {}
 
-  @Get('/test')
-  async test(): Promise<void> {
-    this._stripeService.test();
-  }
 }

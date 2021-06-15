@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { StripeController } from './controllers/stripe.controller';
 import { StripeService } from './services/stripe.service';
-import stripe from 'stripe';
+import Stripe from 'stripe';
 import { ConfigService } from '@nestjs/config';
 import { STRIPE_INJECTION_TOKEN } from './constants/di-tokens';
 
@@ -11,7 +11,7 @@ import { STRIPE_INJECTION_TOKEN } from './constants/di-tokens';
     {
       provide: STRIPE_INJECTION_TOKEN,
       useFactory: async (configService: ConfigService) => {
-        return new stripe.Stripe(configService.get('STRIPE_TOKEN'), {
+        return new Stripe.Stripe(configService.get('STRIPE_TOKEN'), {
           apiVersion: '2020-08-27',
         });
       },
