@@ -11,12 +11,12 @@ export class UsersService {
   async registerAdmin(dto: RegisterAdminDto): Promise<Admin> {
     const { username, password } = dto;
 
-    console.log(await this.findAdminByUsername(username))
+    // check for duplicate usernames
     if ((await this.findAdminByUsername(username)) !== undefined) {
       throw new ConflictException(`Username ${username} already exists`);
     }
 
-    // hash
+    // gen salt and hash
     const salt = await bcrypt.genSalt();
     const hashedPw = await bcrypt.hash(password, salt);
 
@@ -29,7 +29,7 @@ export class UsersService {
     return this._adminRepository.save(admin);
   }
 
-  async findAdminByUsername(username: string): Promise<Admin> {
+  async findAdminByUsername(username: string): Promise<Admin | undefined> {
     return this._adminRepository
       .createQueryBuilder('admin')
       .where('admin.username = :username', { username })

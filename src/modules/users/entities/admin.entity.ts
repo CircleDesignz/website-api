@@ -7,7 +7,7 @@ export class Admin extends IdentifiableEntity {
   username: string;
 
   @Column()
-  password: string; // TODO: Should be bytes
+  password: string;
 
   @Column()
   salt: string;

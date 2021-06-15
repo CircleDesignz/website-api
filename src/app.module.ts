@@ -19,6 +19,7 @@ import { UsersModule } from './modules/users/users.module';
     UsersModule,
     ConfigModule.forRoot({
       envFilePath: '.env.dev',
+      isGlobal: true,
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',

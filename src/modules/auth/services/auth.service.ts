@@ -10,9 +10,9 @@ export class AuthService {
     private readonly _jwtService: JwtService
   ) {}
 
-  async validateUser(username: string, password: string): Promise<Admin> {
+  async validateAdmin(username: string, password: string): Promise<Admin> {
     const admin = await this._usersService.findAdminByUsername(username);
-    if (!admin) {
+    if (admin === undefined) {
       throw new Error('username or password incorrect'); // TODO: better exception with interceptors
     }
     const hashedInput = await bcrypt.hash(password, admin.salt);
