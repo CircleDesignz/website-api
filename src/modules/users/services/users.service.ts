@@ -1,8 +1,9 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { RegisterAdminDto } from '../dto/register-admin.dto';
 import { Admin } from '../entities/admin.entity';
 import { AdminRepository } from '../repositories/admin.repository';
 import bcrypt from 'bcrypt';
+import { AdminExistsException } from '../exceptions/admin-exists.exception';
 
 @Injectable()
 export class UsersService {
@@ -13,7 +14,7 @@ export class UsersService {
 
     // check for duplicate usernames
     if ((await this.findAdminByUsername(username)) !== undefined) {
-      throw new ConflictException(`Username ${username} already exists`);
+      throw new AdminExistsException(`Username ${username} already exists`);
     }
 
     // gen salt and hash

@@ -3,6 +3,7 @@ import { UsersService } from '../../users/services/users.service';
 import { Admin } from '../../users/entities/admin.entity';
 import bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { AdminValidationException } from '@circle/modules/auth/exceptions/admin-validation.exception';
 @Injectable()
 export class AuthService {
   constructor(
@@ -11,14 +12,16 @@ export class AuthService {
   ) {}
 
   async validateAdmin(username: string, password: string): Promise<Admin> {
+    // query admin
     const admin = await this._usersService.findAdminByUsername(username);
     if (admin === undefined) {
-      throw new Error('username or password incorrect'); // TODO: better exception with interceptors
+      throw new AdminValidationException('Username or password is incorrect');
     }
-    const hashedInput = await bcrypt.hash(password, admin.salt);
 
+    // compare to hashed pw
+    const hashedInput = await bcrypt.hash(password, admin.salt);
     if (hashedInput !== admin.password) {
-      throw new Error('username or password incorrect');
+      throw new AdminValidationException('Username or password is incorrect');
     }
 
     return admin;
