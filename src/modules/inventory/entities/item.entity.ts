@@ -10,13 +10,19 @@ export class Item extends IdentifiableEntity {
   @Column()
   descriptor: string;
 
+  @Column()
+  details?: string;
+
   @Column({ default: 0 })
   count: number;
 
-  @Column({ nullable: true })
-  incoming?: number;
+  @Column({ default: 0})
+  threshold: number;
 
   @ManyToOne(() => Product, (product) => product.variants, { nullable: true })
-  associatedProduct?: Product;
-}
+  associatedProduct?: Product
+
+  @Column()
+  isArchived: boolean;
+};
 // TODO: Categorization
