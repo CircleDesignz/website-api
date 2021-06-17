@@ -3,6 +3,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './modules/auth/auth.module';
+import { CartModule } from './modules/cart/cart.module';
 import { CatalogModule } from './modules/catalog/catalog.module';
 import { CustomersModule } from './modules/customers/customers.module';
 import { InventoryModule } from './modules/inventory/inventory.module';
@@ -13,6 +14,7 @@ import { UsersModule } from './modules/users/users.module';
 @Module({
   imports: [
     AuthModule,
+    CartModule,
     CatalogModule,
     CustomersModule,
     InventoryModule,
