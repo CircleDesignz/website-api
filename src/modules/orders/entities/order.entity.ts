@@ -26,7 +26,9 @@ export class Order extends IdentifiableEntity {
   })
   orderStatus: OrderStatus;
 
-  @Column()
-  total: number;
+  @Column({ type: 'jsonb', array: false, default: () => "'[]'" })
+  items: Array<{ sku: string; count: number }>; // TODO: maybe relation with Cart instance if we create cart module
+
+  @Column({ nullable: true })
+  total?: number;
 }
-// TODO: Relation for items in cart
