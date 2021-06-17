@@ -13,11 +13,16 @@ export class InventoryService {
     return this._itemRepository.find();
   }
 
+  async listArchived(): Promise<Item[]> {
+    return this._itemRepository
+      .createQueryBuilder('item')
+      .where('item.isArchived = :state', { state: false })
+      .getMany();
+  }
+
   async registerUnit(dto: RegisterItemDto): Promise<Item> {
     if (await this._keyExists('sku', dto.sku)) {
-      throw new Error(
-        `An item with sku ${dto.sku} already exists`
-      );
+      throw new Error(`An item with sku ${dto.sku} already exists`);
     }
 
     const item = this._itemRepository.create({
@@ -27,7 +32,10 @@ export class InventoryService {
     return this._itemRepository.save(item);
   }
 
-  async updateDetails(id: string, dto: UpdateItemDetailsDto): Promise<UpdateResult> {
+  async updateDetails(
+    id: string,
+    dto: UpdateItemDetailsDto
+  ): Promise<UpdateResult> {
     return this._itemRepository.update({ id }, dto);
   }
 
@@ -55,6 +63,14 @@ export class InventoryService {
     }
 
     return this._itemRepository.decrement({ id }, 'count', by);
+  }
+
+  async undoArchive(id: string): Promise<void> {
+    this._itemRepository.update({ id }, { isArchived: false });
+  }
+
+  async archive(id: string): Promise<void> {
+    this._itemRepository.update({ id }, { isArchived: true });
   }
 
   private async _keyExists(key: string, value: string): Promise<boolean> {

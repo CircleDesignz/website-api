@@ -1,4 +1,4 @@
-import { IsOptional, IsString } from 'class-validator';
+import { IsArray, IsOptional, IsString } from 'class-validator';
 
 export class UpdateProductDetailsDto {
   @IsString()
@@ -9,7 +9,7 @@ export class UpdateProductDetailsDto {
   @IsOptional()
   description?: string;
 
-  @IsString()
+  @IsArray()
   @IsOptional()
-  image?: string;
+  images?: string[];
 }

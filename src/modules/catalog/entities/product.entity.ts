@@ -11,8 +11,8 @@ export class Product extends IdentifiableEntity {
   @Column()
   description: string;
 
-  @Column({ nullable: true })
-  image?: string;
+  @Column('text', { nullable: true, array: true })
+  images?: string[];
 
   @OneToMany(() => Item, (item) => item.associatedProduct)
   variants: Item[];

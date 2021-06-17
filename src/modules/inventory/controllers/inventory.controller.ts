@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Sse } from '@nestjs/common';
 import { RegisterItemDto } from '../dto/register-item.dto';
 import { Item } from '../entities/item.entity';
 import { InventoryService } from '../services/inventory.service';

@@ -1,3 +1,4 @@
+import { ProductStatus } from '@circle/common/enums/product-status.enum';
 import { Injectable } from '@nestjs/common';
 import { RegisterProductDto } from '../dto/register-product.dto';
 import { UpdateProductDetailsDto } from '../dto/update-details.dto';
@@ -31,8 +32,12 @@ export class CatalogService {
     return this._productRepository.save(product);
   }
 
+  async updateProductStatus(id: string, newStatus: ProductStatus) {
+    this._productRepository.update(id, { status: newStatus });
+  }
+
   async updateDetails(id: string, dto: UpdateProductDetailsDto): Promise<void> {
-    await this._productRepository.update(id, { ...dto });
+    this._productRepository.update(id, { ...dto });
   }
 
   async addVariantsToProduct(
