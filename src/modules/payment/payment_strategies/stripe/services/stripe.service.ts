@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import Stripe from 'stripe';
+import { Stripe } from 'stripe';
 import { STRIPE_INJECTION_TOKEN } from '../constants/di-tokens';
 
 @Injectable()
