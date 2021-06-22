@@ -19,7 +19,7 @@ export class CatalogController {
     return this._catalogService.registerProduct(dto);
   }
 
-  @Patch('/detail/:id')
+  @Patch(':id/detail')
   async updateProductDetails(
     @Param() id: string,
     @Body() dto: UpdateProductDetailsDto
@@ -27,7 +27,7 @@ export class CatalogController {
     this._catalogService.updateDetails(id, dto);
   }
 
-  @Patch('/:id')
+  @Patch('/:id/variant')
   async addVariantsToProduct(
     @Param() id: string,
     @Body() dto: AddVariantsToProductsDto

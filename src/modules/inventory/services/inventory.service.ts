@@ -70,6 +70,7 @@ export class InventoryService {
   }
 
   async archive(id: string): Promise<void> {
+    // TODO: Check outstanding orders or spawn event
     this._itemRepository.update({ id }, { isArchived: true });
   }
 
