@@ -10,7 +10,7 @@ import { CustomersModule } from './modules/customers/customers.module';
 import { InventoryModule } from './modules/inventory/inventory.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { PaymentModule } from './modules/payment/payment.module';
-import { UsersModule } from './modules/users/users.module';
+import { SessionsModule } from './modules/sessions/sessions.module';
 
 @Module({
   imports: [
@@ -22,7 +22,7 @@ import { UsersModule } from './modules/users/users.module';
     InventoryModule,
     OrdersModule,
     PaymentModule,
-    UsersModule,
+    SessionsModule,
     ConfigModule.forRoot({
       envFilePath: '.dev.env',
       isGlobal: true,

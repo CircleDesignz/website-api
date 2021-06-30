@@ -1,4 +1,4 @@
-import { HttpService, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, Profile } from 'passport-github2';
@@ -9,7 +9,6 @@ export class GitHubStrategy extends PassportStrategy(Strategy) {
   constructor(
     private readonly _configService: ConfigService,
     private readonly _authService: AuthService,
-    private readonly _httpService: HttpService
   ) {
     super({
       clientID: _configService.get('GITHUB_CLIENT_ID'),
@@ -21,9 +20,10 @@ export class GitHubStrategy extends PassportStrategy(Strategy) {
 
   async validate(
     accessToken: string,
-    refreshToken: string,
+    _refreshToken: string,
     profile: Profile
   ): Promise<any> {
+    console.log(profile);
     return this._authService.validateByGitHub(accessToken, profile);
   }
 }
