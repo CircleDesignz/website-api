@@ -1,30 +1,29 @@
-import { Injectable } from '@nestjs/common';
+import { HttpService, Injectable } from '@nestjs/common';
 import { UsersService } from '../../users/services/users.service';
 import { Admin } from '../../users/entities/admin.entity';
 import bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { AdminValidationException } from '@circle/modules/auth/exceptions/admin-validation.exception';
+import { Profile } from 'passport-github2';
 @Injectable()
 export class AuthService {
   constructor(
+    private _httpservice: HttpService,
     private readonly _usersService: UsersService,
     private readonly _jwtService: JwtService
   ) {}
 
-  async validateAdmin(username: string, password: string): Promise<Admin> {
-    // query admin
-    const admin = await this._usersService.findAdminByUsername(username);
-    if (admin === undefined) {
-      throw new AdminValidationException('Username or password is incorrect');
-    }
+  async validateByGitHub(accessToken: string, profile: Profile): Promise<any> {
+    const res = await this._httpservice
+      .get('https://api.github.com/user/orgs', {
+        headers: { Authorization: `token ${accessToken}` },
+      })
+      .toPromise();
 
-    // compare to hashed pw
-    const hashedInput = await bcrypt.hash(password, admin.salt);
-    if (hashedInput !== admin.password) {
-      throw new AdminValidationException('Username or password is incorrect');
+    const filteredOrgs = res.data.filter((item: any) => item.login === 'CircleDesignz');
+    if (filteredOrgs.length !== 1) {
+      throw new AdminValidationException('User is not authorized');
     }
-
-    return admin;
   }
 
   async login(user: any): Promise<any> {
