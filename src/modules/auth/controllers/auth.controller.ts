@@ -1,12 +1,13 @@
 import {
   Controller,
   Get,
+  Req,
   Res,
   UseFilters,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { SessionGuard } from '../guards/session.guard';
 import { GitHubAuthGuard } from '../guards/github-auth.guard';
 import { AuthService } from '../services/auth.service';
@@ -17,7 +18,7 @@ export class AuthController {
 
   @UseGuards(GitHubAuthGuard)
   @Get('login')
-  async authenticateGitHub(@Res() res: Response): Promise<any> {}
+  async authenticateGitHub(@Req() req: Request): Promise<any> {}
 
   @UseGuards(GitHubAuthGuard)
   @Get('redirect')
@@ -31,5 +32,17 @@ export class AuthController {
     return {
       message: 'Ok',
     };
+  }
+
+  @UseGuards(SessionGuard)
+  @Get('logout')
+  async logout(@Req() req: Request, @Res() res: Response) {
+    req.session.destroy((err) => {
+      if (err) {
+        throw err;
+      }
+    });
+    req.logOut();
+    res.redirect('https://notcircle.ca');
   }
 }
