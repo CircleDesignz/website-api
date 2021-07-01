@@ -2,29 +2,34 @@ import {
   Controller,
   Get,
   Res,
+  UseFilters,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { response, Response } from 'express';
+import { Response } from 'express';
+import { SessionGuard } from '../guards/session.guard';
 import { GitHubAuthGuard } from '../guards/github-auth.guard';
-import { AdminValidationInterceptor } from '../interceptors/admin-validation.interceptors';
 import { AuthService } from '../services/auth.service';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly _authservice: AuthService) {}
 
-  @Get('login')
-  @UseInterceptors(AdminValidationInterceptor)
   @UseGuards(GitHubAuthGuard)
-  async authenticateGitHub(@Res() res: Response): Promise<any> {
-    res.send(200);
+  @Get('login')
+  async authenticateGitHub(@Res() res: Response): Promise<any> {}
+
+  @UseGuards(GitHubAuthGuard)
+  @Get('redirect')
+  async redirect(@Res() res: Response) {
+    res.redirect('http://localhost:3000/auth/test');
   }
 
-  @Get('redirect')
-  @UseInterceptors(AdminValidationInterceptor)
-  @UseGuards(GitHubAuthGuard)
-  async redirect(@Res() res: Response) {
-    res.redirect('https://www.notcircle.ca');
+  @UseGuards(SessionGuard)
+  @Get('test')
+  async test(): Promise<any> {
+    return {
+      message: 'Ok',
+    };
   }
 }

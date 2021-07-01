@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './modules/auth/auth.module';
 import { CartModule } from './modules/cart/cart.module';
@@ -10,7 +11,6 @@ import { CustomersModule } from './modules/customers/customers.module';
 import { InventoryModule } from './modules/inventory/inventory.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { PaymentModule } from './modules/payment/payment.module';
-import { SessionsModule } from './modules/sessions/sessions.module';
 
 @Module({
   imports: [
@@ -22,7 +22,6 @@ import { SessionsModule } from './modules/sessions/sessions.module';
     InventoryModule,
     OrdersModule,
     PaymentModule,
-    SessionsModule,
     ConfigModule.forRoot({
       envFilePath: '.dev.env',
       isGlobal: true,

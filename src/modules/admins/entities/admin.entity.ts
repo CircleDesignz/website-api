@@ -2,13 +2,13 @@ import { IdentifiableEntity } from '@circle/common/entities/identifiable.entity'
 import { Column, Entity } from 'typeorm';
 
 @Entity()
-export class Session extends IdentifiableEntity {
-  @Column()
+export class Admin extends IdentifiableEntity {
+  @Column({ unique: true })
   username: string;
 
   @Column({ nullable: true })
-  avatarUrl?: string;
+  email?: string;
 
   @Column({ nullable: true })
-  email?: string;
+  avatar?: string;
 }

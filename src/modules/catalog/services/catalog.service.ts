@@ -1,5 +1,6 @@
 import { ProductStatus } from '@circle/common/enums/product-status.enum';
 import { Injectable } from '@nestjs/common';
+import { InvokeSaleDto } from '../dto/invoke-sale.dto';
 import { RegisterProductDto } from '../dto/register-product.dto';
 import { UpdateProductDetailsDto } from '../dto/update-details.dto';
 import { Product } from '../entities/product.entity';
@@ -49,5 +50,8 @@ export class CatalogService {
       .relation(Product, 'variants')
       .of(productId)
       .add(variantIds);
+  }
+
+  async invokeSale(productId: string, dto: InvokeSaleDto): Promise<any> {
   }
 }

@@ -2,13 +2,14 @@ import { HttpService, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AdminValidationException } from '@circle/modules/auth/exceptions/admin-validation.exception';
 import { Profile } from 'passport-github2';
-import { SessionsService } from '@circle/modules/sessions/services/sessions.service';
+import { AdminsService } from '@circle/modules/admins/services/admins.service';
+
 @Injectable()
 export class AuthService {
   constructor(
     private _httpservice: HttpService,
     private readonly _jwtService: JwtService,
-    private readonly _sessionsService: SessionsService
+    private readonly _adminService: AdminsService
   ) {}
 
   async validateByGitHub(accessToken: string, profile: Profile): Promise<any> {
@@ -26,14 +27,12 @@ export class AuthService {
       throw new AdminValidationException('User is not authorized');
     }
 
-    return this._sessionsService.createSession(profile.username);
-  }
+    const admin = await this._adminService.findAdmin(profile.username);
 
-  async login(user: any): Promise<any> {
-    const payload = { username: user.username, password: user.password };
+    if (admin) {
+      return admin;
+    }
 
-    return {
-      access_token: this._jwtService.signAsync(payload),
-    };
+    return this._adminService.registerAdmin(profile.username, null, null);
   }
 }

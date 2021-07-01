@@ -23,7 +23,6 @@ export class GitHubStrategy extends PassportStrategy(Strategy) {
     _refreshToken: string,
     profile: Profile
   ): Promise<any> {
-    console.log(profile);
     return this._authService.validateByGitHub(accessToken, profile);
   }
 }
