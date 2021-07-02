@@ -1,29 +1,31 @@
 import { HttpService, Injectable } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { AdminValidationException } from '@circle/modules/auth/exceptions/admin-validation.exception';
 import { Profile } from 'passport-github2';
 import { AdminsService } from '@circle/modules/admins/services/admins.service';
+import { Admin } from '@circle/modules/admins/entities/admin.entity';
 
 @Injectable()
 export class AuthService {
   constructor(
     private _httpservice: HttpService,
-    private readonly _jwtService: JwtService,
     private readonly _adminService: AdminsService
   ) {}
 
-  async validateByGitHub(accessToken: string, profile: Profile): Promise<any> {
-    const res = await this._httpservice
+  async validateByGitHub(
+    accessToken: string,
+    profile: Profile
+  ): Promise<Admin> {
+    const response = await this._httpservice
       .get('https://api.github.com/user/orgs', {
         headers: { Authorization: `token ${accessToken}` },
       })
       .toPromise();
 
-    const filteredOrgs = res.data.filter(
-      (item: any) => item.login === 'CircleDesignz'
+    const targetOrg = response.data.find(
+      (org: any) => org.login === 'CircleDesignz'
     );
 
-    if (filteredOrgs.length !== 1) {
+    if (targetOrg === undefined) {
       throw new AdminValidationException('User is not authorized');
     }
 
@@ -33,6 +35,10 @@ export class AuthService {
       return admin;
     }
 
-    return this._adminService.registerAdmin(profile.username, null, null);
+    return this._adminService.registerAdmin(
+      profile.username,
+      profile.emails[0]['value'],
+      profile.photos[0]['value']
+    );
   }
 }

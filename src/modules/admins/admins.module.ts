@@ -6,6 +6,6 @@ import { AdminsService } from './services/admins.service';
 @Module({
   imports: [TypeOrmModule.forFeature([AdminRepository])],
   exports: [AdminsService],
-  providers: [AdminsService]
+  providers: [AdminsService],
 })
 export class AdminsModule {}

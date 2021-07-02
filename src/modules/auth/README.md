@@ -1,6 +1,9 @@
 # Authentication
 
+Authentication is handled via OAuth2 through Github. Accounts associated with the Circle discord org will be able to access admin routes.
+
+Sessions persist to a Redis client instance. Account info stored in PostgreSQL.
+
 ## TODO
-- Maybe? migrate to session based auth since there are only like 4 admin accounts.
-- Token expiration + expiration check
-- Access Authorization
+
+- Dockerize for prod

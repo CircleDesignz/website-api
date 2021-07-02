@@ -1,24 +1,13 @@
-import {
-  Controller,
-  Get,
-  Req,
-  Res,
-  UseFilters,
-  UseGuards,
-  UseInterceptors,
-} from '@nestjs/common';
+import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { SessionGuard } from '../guards/session.guard';
 import { GitHubAuthGuard } from '../guards/github-auth.guard';
-import { AuthService } from '../services/auth.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly _authservice: AuthService) {}
-
   @UseGuards(GitHubAuthGuard)
   @Get('login')
-  async authenticateGitHub(@Req() req: Request): Promise<any> {}
+  async authenticateGitHub(): Promise<any> {}
 
   @UseGuards(GitHubAuthGuard)
   @Get('redirect')
