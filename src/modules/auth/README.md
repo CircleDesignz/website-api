@@ -7,3 +7,4 @@ Sessions persist to a Redis client instance. Account info stored in PostgreSQL.
 ## TODO
 
 - Dockerize for prod
+- Protect routes (maybe with roles)

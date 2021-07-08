@@ -13,7 +13,7 @@ export class GitHubStrategy extends PassportStrategy(Strategy) {
     super({
       clientID: _configService.get('GITHUB_CLIENT_ID'),
       clientSecret: _configService.get('GITHUB_CLIENT_SECRET'),
-      callbackURL: 'http://localhost:3000/auth/redirect',
+      callbackURL: 'http://localhost:3000/auth/callback',
       scope: ['read:org']
     });
   }
@@ -23,6 +23,6 @@ export class GitHubStrategy extends PassportStrategy(Strategy) {
     _refreshToken: string,
     profile: Profile
   ): Promise<any> {
-    return this._authService.validateByGitHub(accessToken, profile);
+    return this._authService.validateAdmin(accessToken, profile);
   }
 }

@@ -7,20 +7,18 @@ import { GitHubAuthGuard } from '../guards/github-auth.guard';
 export class AuthController {
   @UseGuards(GitHubAuthGuard)
   @Get('login')
-  async authenticateGitHub(): Promise<any> {}
+  async authenticate(): Promise<any> {}
 
   @UseGuards(GitHubAuthGuard)
-  @Get('redirect')
-  async redirect(@Res() res: Response) {
-    res.redirect('http://localhost:3000/auth/test');
+  @Get('callback')
+  async callback(@Res() res: Response) {
+    res.redirect('http://localhost:3001/admin/temp-index');
   }
 
   @UseGuards(SessionGuard)
-  @Get('test')
-  async test(): Promise<any> {
-    return {
-      message: 'Ok',
-    };
+  @Get()
+  async authStatus(@Res() res: Response): Promise<any> {
+    res.sendStatus(204);
   }
 
   @UseGuards(SessionGuard)
@@ -32,6 +30,6 @@ export class AuthController {
       }
     });
     req.logOut();
-    res.redirect('https://notcircle.ca');
+    res.redirect('http://localhost:3001');
   }
 }

@@ -10,12 +10,12 @@ services:
     container_name: test_postgres
     image: postgres:13
     restart: always
-    ports:
+    ports:_
       - 5001:5432
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: test_data
+      POSTGRES_DB: testdata
     volumes:
       - /tmp:/tmp
 volumes:

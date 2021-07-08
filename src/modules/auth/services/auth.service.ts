@@ -11,7 +11,7 @@ export class AuthService {
     private readonly _adminService: AdminsService
   ) {}
 
-  async validateByGitHub(
+  async validateAdmin(
     accessToken: string,
     profile: Profile
   ): Promise<Admin> {
